@@ -1,0 +1,70 @@
+
+function obtener_parametro(){
+		
+
+		$.ajax({
+			method: "POST",
+			url: "php/obtener_seccion_mtd.php",
+			dataType:"json"
+		}).done(function(data){
+			var resultado = "";
+
+			data.seccion.forEach(function(entry){
+				//console.log(entry);
+			resultado += '<tr><td>'+entry.seccion+'</td>'+
+							 '<td>'+'Obteniendo...'+'</td>';
+						if(data.show == 'true'){
+							resultado += '<td><a href="#" class="btn btn-default ver" role="button" data-id="'+entry.id+'">'+
+								  '<span class="glyphicon glyphicon-eye-open"></span></a></td>';
+						}
+						resultado += '</tr>';
+			
+		    } );
+			$('#get_parametro').empty();
+			$('#get_parametro').append(resultado);
+			$(".ver").on("click",verDetalle);
+			
+
+			
+		}).fail(function(error){
+			alert("Funcionalidad no disponible por el momento, intente mas tarde");
+			
+		});
+   
+}
+
+function verDetalle(){
+  
+	window.location.replace("editar_parametro.php?"+btoa("cliente="+$(this).attr("data-id")));
+}
+
+function responsive_menu(){
+	
+   if($(window).width() < 800){
+	   
+	   $('.navbar-right').hide();
+	   $('#fecha').css('width','60%');
+   } else {
+	   
+	   $('.navbar-right').show();
+	   
+   }
+	
+}
+$('#fecha').css('width','40%');
+
+$(function(){
+	responsive_menu();
+	$(window).resize(function(){
+		responsive_menu();
+	});
+	obtener_parametro();
+
+	$("#buscar").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$("#get_cliente tr").filter(function() {
+		  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+	
+});

@@ -15,7 +15,7 @@ if (!isset($_SESSION["tipo_corpoteg"]) && !isset($_SESSION["usuario_corpoteg"]))
         <span class="icon-bar"></span>
         <span class="icon-bar"></span> 
       </button>
-      <img src="img/logo_alltron.png" class="navbar-brand" alt="Vivilab" style="padding: 4px;">
+      <img src="img/logo_alltron.png" class="navbar-brand" alt="Alltron" style="padding: 4px;">
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -25,36 +25,37 @@ if (!isset($_SESSION["tipo_corpoteg"]) && !isset($_SESSION["usuario_corpoteg"]))
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sistema
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="cliente.php">Cliente</a></li>
               <?php if($_SESSION['tipo_corpoteg'] == 1) { ?>
-              <li><a href="medicion.php">Medición</a></li>
-              <li><a href="parametro.php">Parámetro</a></li>
-              <li><a href="categoria.php">Categoría</a></li>
-              <li><a href="concepto.php">Concepto</a></li>
-              <li><a href="servicio.php">Servicio</a></li>
-              <li><a href="turno.php">Asignar servicio</a></li>
+              
+              <li><a href="cliente.php">Cliente</a></li>
+              <li><a href="pregunta.php">Preguntas</a></li>
+              <li><a href="seccion.php">Secciones</a></li>
+              <li><a href="categoria.php">Reportes</a></li>
+              <li><a href="servicio.php">Asignar Reporte</a></li>
+              <li><a href="usuario.php">Reportes contestados</a></li>
+              
               <?php  }; ?>
             </ul>
           </li>
         <?php  }; ?>
+        
         <?php if($_SESSION['tipo_corpoteg'] == 1 ) { ?>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Usuarios
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="usuario.php">Usuario</a></li>
+            <li><a href="usuario.php">Registro</a></li>
+            <li><a href="turno.php">Asignar Servicio</a></li>
             
           </ul>
         </li>
         <?php  }; ?>
          <?php if($_SESSION['tipo_corpoteg'] == 1 || $_SESSION['tipo_corpoteg'] == 3 || $_SESSION['tipo_corpoteg'] == 4) { ?>
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Documentos
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servicios
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="grupo.php">Grupos</a></li>
-            <li><a href="producto.php">Productos</a></li>
-            <li><a href="archivo.php">Archivos</a></li>
+            <li><a href="grupo.php">Servicios</a></li>
             
           </ul>
         </li>
