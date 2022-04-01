@@ -20,7 +20,7 @@ if (!isset($_SESSION["tipo_corpoteg"]) && !isset($_SESSION["usuario_corpoteg"]) 
   <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
   <script src="js/bootstrap-select.js" type="text/javascript"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/nueva_seccion.js"></script>
+  <script src="js/edita_seccion.js"></script>
  
 </head>
 <body> 

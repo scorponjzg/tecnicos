@@ -17,6 +17,44 @@ function validaForm(){
 	return correcto;
 }
 
+function getQueryVariable(variable) {
+   var query = window.location.search.substring(1);
+   var vars = atob(query).split("&");
+  
+  for (var i=0; i < vars.length; i++) {
+       var pair = vars[i].replace('=','/').split("/");
+      
+       if(pair[0] == variable) {
+           return pair[1];
+       }
+   }
+   return false;
+}
+
+function obtenerSeccionId(){
+	var cliente = getQueryVariable('seccion');
+	
+	$.ajax({
+
+		method: "POST",
+		url:"php/obtener_seccion_id_mtd.php",
+		dataType: "json",
+		data: {"cliente":cliente}
+
+	}).done(function(data){
+		
+		if (data.cliete.estado == "1"){
+			$("#estado").attr('checked', true);
+		}
+		$("#nombre").val(data.cliete.cliente);
+		$("#clave").val(data.cliete.id);
+		$("#dir").val(data.cliete.direccion);
+		
+	}).fail(function(error){
+		console.log(error.responseText);
+
+	});
+}
 
 function verDetalle(){
   
@@ -78,6 +116,7 @@ function obtenerPregunta(){
 				});
 				$("#select").append(pregunta);
 				$('.selectpicker').selectpicker('refresh');
+				obtenerSeccionId();
 			
 		}).fail(function(error){
 			alert(error.responseText);
@@ -103,6 +142,7 @@ function responsive_menu(){
 $('#fecha').css('width','40%');
 
 $(function(){
+	
 	obtenerPregunta();
 	responsive_menu();
 	$(window).resize(function(){
@@ -122,7 +162,7 @@ $(function(){
 		event.preventDefault();
 		//console.log(estudios);
 		var formulario = $(this).serialize();
-		//console.log(formulario);
+		console.log(formulario);
 		if(validaForm()){	
 				
 				$.ajax({

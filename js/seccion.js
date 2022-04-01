@@ -8,7 +8,7 @@ function obtener_parametro(){
 			dataType:"json"
 		}).done(function(data){
 			var resultado = "";
-
+			console.log(data);
 			data.seccion.forEach(function(entry){
 				//console.log(entry);
 			resultado += '<tr><td>'+entry.seccion+'</td>'+
@@ -35,7 +35,7 @@ function obtener_parametro(){
 
 function verDetalle(){
   
-	window.location.replace("editar_parametro.php?"+btoa("cliente="+$(this).attr("data-id")));
+	window.location.replace("editar_seccion.php?"+btoa("seccion="+$(this).attr("data-id")));
 }
 
 function responsive_menu(){
