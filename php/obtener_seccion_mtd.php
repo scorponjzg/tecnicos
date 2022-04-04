@@ -25,7 +25,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		
 		while($resultado = $result->fetch_assoc()){
 			$medicion = [];	
-			$sql = "SELECT  p.pregunta, IF(p.tipo = 0, 'Consulta', IF(p.tipo = 1, 'Selección', 'Campo de texto' )) AS tipo FROM pregunta AS p, seccion_pregunta AS sp WHERE sp.fk_seccion = {$resultado['id']} && sp.fk_pregunta = p.pk_pregunta;";
+			$sql = "SELECT  p.pregunta, IF(p.tipo = 0, 'Consulta', IF(p.tipo = 1, 'Selección', 'Campo de texto' )) AS tipo FROM pregunta AS p, seccion_pregunta AS sp WHERE sp.fk_seccion = {$resultado['id']} && sp.fk_pregunta = p.pk_pregunta ORDER BY sp.pk_seccion_pregunta;";
 			//error_log($sql);
 													
 			$result1 = $conn->query($sql);
@@ -34,7 +34,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		
 				while($resultado1 = $result1->fetch_assoc()){
 
-					$medicion[] = $resultado1;
+					$medicion["pregunta"][] = $resultado1;
 
 					}
 				}

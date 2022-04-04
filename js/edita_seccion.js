@@ -1,6 +1,7 @@
 var array_concepto= new Array();
 var pregunta_asignado = 0;
 var id_incremental = 1;
+var bandera_eliminar = 0;
 function validaForm(){
 	var correcto = false;
 	 if($("#nombre").val() == ''){
@@ -31,24 +32,86 @@ function getQueryVariable(variable) {
    return false;
 }
 
-function obtenerSeccionId(){
-	var cliente = getQueryVariable('seccion');
+function eliminarPregunta(){
+
+	var id = $(this).attr("data-id");
 	
+	if(bandera_eliminar == 0){
+		bandera_eliminar = 1;
+		if(confirm("¿Quiere dar de baja la pregunta?")){
+		
+			$.ajax({
+			  method: "POST",
+			  url: "php/baja_pregunta_asignada_mtd.php",
+			  dataType: "json",
+			  data: {"id": id}
+			  
+			}).done(function(data){
+				
+				if(data.eliminado == 'true'){
+					alert("Pregunta eliminada correctamente");
+					//window.location.href="servicio.php";
+					$( "#"+id).remove();
+					
+
+				} else {
+
+					alert(data.eliminado);
+				}
+				bandera_eliminar = 0;
+				
+				}).fail(function(error){
+				   console.log(error)
+					alert("Por el momento no esta disponible el servicio, intente m\u00E1s tarde");
+					bandera_eliminar = 0;
+					  
+			});
+		} else {
+
+			setTimeout(function(){
+
+				bandera_eliminar = 0;
+
+			}, 3000);
+		}
+
+	} 
+
+	
+}
+
+function obtenerSeccionId(){
+	var seccion = getQueryVariable('seccion');
 	$.ajax({
 
 		method: "POST",
 		url:"php/obtener_seccion_id_mtd.php",
 		dataType: "json",
-		data: {"cliente":cliente}
+		data: {"seccion":seccion}
 
 	}).done(function(data){
 		
-		if (data.cliete.estado == "1"){
-			$("#estado").attr('checked', true);
-		}
-		$("#nombre").val(data.cliete.cliente);
-		$("#clave").val(data.cliete.id);
-		$("#dir").val(data.cliete.direccion);
+		$("#nombre").val(data.seccion.seccion);
+		$("#identificador").val(data.seccion.id);
+		var listado = "";
+
+		data.seccion.pregunta.forEach(function(entry){
+
+		listado = '<tr id="'+entry.id+'" style="background : #5bc0de;"><td>'+entry.pregunta+'</td>'
+				+'<td>'+entry.tipo+'</td>'
+				+'<td><a href="#" class="btn btn-danger btn-sm eliminarPregunta" role="button" data-id="'+entry.id+'">'+'<input type="hidden" value="'+entry.id+'">'
+				+'<span class="glyphicon glyphicon-remove"></span></a></td></tr>';
+				id_incremental ++;
+				$("#table-body").append(listado);
+				//array_concepto['id'+id_incremental].activo = false;
+				pregunta_asignado ++;
+		
+
+	$(".eliminarPregunta").on("click",eliminarPregunta);
+
+
+		});
+		
 		
 	}).fail(function(error){
 		console.log(error.responseText);
@@ -60,6 +123,7 @@ function verDetalle(){
   
 	window.location.replace("editar_seccion.php?"+btoa("servicio="+$(this).attr("data-id")));
 }
+
 function agregarPregunta(){
 	var id = $("#select").val();
 	tipo = "";
@@ -71,7 +135,7 @@ function agregarPregunta(){
 		} else {
 			tipo = "Consulta"
 		}
-	//if(tabla.activo == true){
+	
 		var listado = '<tr id="row'+id_incremental+'"><td>'+tabla.pregunta+'</td>'
 		+'<td>'+tipo+'</td>'
 		+'<td><a href="#" class="btn btn-danger btn-sm remover" role="button" data-id="'+id_incremental+'">'+'<input type="hidden" name="concepto'+id_incremental+'" value="'+id+'">'
@@ -81,7 +145,6 @@ function agregarPregunta(){
 		//array_concepto['id'+id_incremental].activo = false;
 		pregunta_asignado ++;
 		
-	//}
 	$(".remover").on("click",remover);
 }
 function remover(){
@@ -89,13 +152,10 @@ function remover(){
 	var id = $(this).attr("data-id");
 	$( "#row"+id).remove();
 	
-	//if(array_concepto['id'+id].activo == false){
-		
 		pregunta_asignado --;
-	//}
-	//array_concepto['id'+id].activo = true;
-		
+	
 }
+
 function obtenerPregunta(){
 		
 		$.ajax({
@@ -103,7 +163,6 @@ function obtenerPregunta(){
 			url: "php/obtener_pregunta_mtd.php",
 			dataType: "json"
 		}).done(function(data){
-			console.log(data);
 					
 				var pregunta = "";
 				data.pregunta.forEach(function(entry){
@@ -160,24 +219,21 @@ $(function(){
 
 	$("#formulario").submit(function(event){
 		event.preventDefault();
-		//console.log(estudios);
 		var formulario = $(this).serialize();
-		console.log(formulario);
 		if(validaForm()){	
 				
 				$.ajax({
 				method: "POST",
-				url: "php/nueva_seccion_mtd.php",
+				url: "php/edita_seccion_mtd.php",
 				dataType: "json",
 				data: formulario 
 				}).done(function(entry){
-					console.log(entry);
-					if(entry.ingresado == 'true'){
-						//alert("Orden creada correctamente.");
-						//window.open('imprimir_orden.php?orden='+entry.nueva, '_self');
+					
+					if(entry.editado == 'true'){
+						alert("Seccion editada correctamente.");
 						window.location.replace("seccion.php");
 					} else {
-						alert(entry.ingresado);
+						alert(entry.editado);
 					}
 				}).fail(function(error){
 					console.log(error.responseText);

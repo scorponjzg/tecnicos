@@ -8,18 +8,27 @@ function obtener_parametro(){
 			dataType:"json"
 		}).done(function(data){
 			var resultado = "";
-			console.log(data);
+			
 			data.seccion.forEach(function(entry){
-				//console.log(entry);
+				
+			var preguntas = "";	
+
+				entry.pregunta.forEach(function(pregunta){
+
+					preguntas += pregunta.pregunta + "<br>";
+
+				});
+
 			resultado += '<tr><td>'+entry.seccion+'</td>'+
-							 '<td>'+'Obteniendo...'+'</td>';
-						if(data.show == 'true'){
-							resultado += '<td><a href="#" class="btn btn-default ver" role="button" data-id="'+entry.id+'">'+
-								  '<span class="glyphicon glyphicon-eye-open"></span></a></td>';
-						}
+							 '<td>'+preguntas+'</td>';
+			if(data.show == 'true'){
+				resultado += '<td><a href="#" class="btn btn-default ver" role="button" data-id="'+entry.id+'">'+
+					  '<span class="glyphicon glyphicon-eye-open"></span></a></td>';
+			}
 						resultado += '</tr>';
 			
 		    } );
+		    
 			$('#get_parametro').empty();
 			$('#get_parametro').append(resultado);
 			$(".ver").on("click",verDetalle);

@@ -10,7 +10,7 @@ if (!isset($_SESSION["tipo_corpoteg"]) && !isset($_SESSION["usuario_corpoteg"]) 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Nueva sección</title>
+  <title>Detalle</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="img/favicon.png">
@@ -39,7 +39,9 @@ if (!isset($_SESSION["tipo_corpoteg"]) && !isset($_SESSION["usuario_corpoteg"]) 
 		<div class="well" style="margin: 0px">
 
 		<div class="row" style="width: 80%;margin: auto;">
-  				
+
+  		  <input type="hidden" id="identificador" name="identificador">	
+
 			 <div class="form-group">		
 				<label for="nombre">Nombre de la secci&oacute;n:</label>
 				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la sección">

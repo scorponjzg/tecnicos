@@ -33,17 +33,17 @@ function agregarPregunta(){
 		} else {
 			tipo = "Consulta"
 		}
-	//if(tabla.activo == true){
+
 		var listado = '<tr id="row'+id_incremental+'"><td>'+tabla.pregunta+'</td>'
 		+'<td>'+tipo+'</td>'
 		+'<td><a href="#" class="btn btn-danger btn-sm remover" role="button" data-id="'+id_incremental+'">'+'<input type="hidden" name="concepto'+id_incremental+'" value="'+id+'">'
 		+'<span class="glyphicon glyphicon-remove"></span></a></td></tr>';
 		id_incremental ++;
 		$("#table-body").append(listado);
-		//array_concepto['id'+id_incremental].activo = false;
+		
 		pregunta_asignado ++;
 		
-	//}
+	
 	$(".remover").on("click",remover);
 }
 function remover(){
@@ -51,13 +51,10 @@ function remover(){
 	var id = $(this).attr("data-id");
 	$( "#row"+id).remove();
 	
-	//if(array_concepto['id'+id].activo == false){
-		
 		pregunta_asignado --;
-	//}
-	//array_concepto['id'+id].activo = true;
 		
 }
+
 function obtenerPregunta(){
 		
 		$.ajax({
@@ -65,7 +62,6 @@ function obtenerPregunta(){
 			url: "php/obtener_pregunta_mtd.php",
 			dataType: "json"
 		}).done(function(data){
-			console.log(data);
 					
 				var pregunta = "";
 				data.pregunta.forEach(function(entry){
@@ -109,7 +105,6 @@ $(function(){
 		responsive_menu();
 	});
 
-	//$("#categoria").on("change",obtenerMedicion);
 	$("#buscar").on("keyup", function() {
 		var value = $(this).val().toLowerCase();
 		$("#get_categoria tr").filter(function() {
@@ -120,9 +115,7 @@ $(function(){
 
 	$("#formulario").submit(function(event){
 		event.preventDefault();
-		//console.log(estudios);
 		var formulario = $(this).serialize();
-		//console.log(formulario);
 		if(validaForm()){	
 				
 				$.ajax({
@@ -131,11 +124,11 @@ $(function(){
 				dataType: "json",
 				data: formulario 
 				}).done(function(entry){
-					console.log(entry);
+					
 					if(entry.ingresado == 'true'){
-						//alert("Orden creada correctamente.");
-						//window.open('imprimir_orden.php?orden='+entry.nueva, '_self');
+						
 						window.location.replace("seccion.php");
+						
 					} else {
 						alert(entry.ingresado);
 					}
